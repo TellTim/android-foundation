@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    defaultConfig {
+        applicationId "com.telltim.foundation"
+        minSdkVersion rootProject.ext.androidCompileSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    //Add the following configuration
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+}
+
+dependencies {
+
+    def implDependencies = rootProject.ext.implDependencies
+    def testImplDependencies = rootProject.ext.testImplDependencies
+    def androidTestImplDependencies = rootProject.ext.androidTestImplDependencies
+    def annotationProcessorDependencies = rootProject.ext.annoProcessorDependencies
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation implDependencies.appcompatV7
+    implementation implDependencies.constraintLayout
+    testImplementation testImplDependencies.junit
+    androidTestImplementation androidTestImplDependencies.runner
+    androidTestImplementation androidTestImplDependencies.espresso
+
+    implementation implDependencies.butterKnife
+    annotationProcessor annotationProcessorDependencies.butterknife
+
+}
